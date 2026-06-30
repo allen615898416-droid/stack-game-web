@@ -36,6 +36,23 @@
 
   <link rel="stylesheet" type="text/css" href="style.css"/>
 
+<script>
+window.onerror = function(msg, url, line, col, err) {
+    var d = document.createElement('div');
+    d.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:red;color:white;font-size:12px;padding:10px;white-space:pre-wrap;max-height:50vh;overflow:auto;font-family:monospace';
+    d.textContent = 'JS ERROR: ' + msg + '
+URL: ' + url + '
+Line: ' + line + ':' + col + '
+Stack: ' + (err && err.stack ? err.stack : 'N/A');
+    document.body.appendChild(d);
+};
+window.addEventListener('unhandledrejection', function(event) {
+    var d = document.createElement('div');
+    d.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:orange;color:black;font-size:12px;padding:10px;white-space:pre-wrap;max-height:50vh;overflow:auto;font-family:monospace';
+    d.textContent = 'PROMISE REJECT: ' + (event.reason && event.reason.stack ? event.reason.stack : String(event.reason));
+    document.body.appendChild(d);
+});
+</script>
 </head>
 <body>
   <div id="GameDiv" cc_exact_fit_screen="true">
