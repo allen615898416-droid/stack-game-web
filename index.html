@@ -36,23 +36,6 @@
 
   <link rel="stylesheet" type="text/css" href="style.css"/>
 
-<script>
-window.onerror = function(msg, url, line, col, err) {
-    var d = document.createElement('div');
-    d.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:red;color:white;font-size:12px;padding:10px;white-space:pre-wrap;max-height:50vh;overflow:auto;font-family:monospace';
-    d.textContent = 'JS ERROR: ' + msg + '
-URL: ' + url + '
-Line: ' + line + ':' + col + '
-Stack: ' + (err && err.stack ? err.stack : 'N/A');
-    document.body.appendChild(d);
-};
-window.addEventListener('unhandledrejection', function(event) {
-    var d = document.createElement('div');
-    d.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:orange;color:black;font-size:12px;padding:10px;white-space:pre-wrap;max-height:50vh;overflow:auto;font-family:monospace';
-    d.textContent = 'PROMISE REJECT: ' + (event.reason && event.reason.stack ? event.reason.stack : String(event.reason));
-    document.body.appendChild(d);
-});
-</script>
 </head>
 <body>
   <div id="GameDiv" cc_exact_fit_screen="true">
@@ -72,6 +55,34 @@ window.addEventListener('unhandledrejection', function(event) {
 
 <!-- Import map -->
 <script src="src/import-map.json" type="systemjs-importmap" charset="utf-8"> </script>
+
+<!--
+  PC / 横屏适配：在 Cocos 引擎读取容器尺寸前，
+  强制将 #Cocos3dGameContainer 约束为 9:16 竖屏比例居中。
+  手机竖屏时自然填满；PC/横屏时两侧留黑边。
+-->
+<script>
+(function() {
+  var vw = window.innerWidth;
+  var vh = window.innerHeight;
+  var RATIO = 9 / 16;
+
+  var container = document.getElementById('Cocos3dGameContainer');
+  if (!container) return;
+
+  if (vw > vh * RATIO) {
+    // PC / 横屏：以高度为准，宽度收窄
+    var w = Math.floor(vh * RATIO);
+    container.style.width = w + 'px';
+    container.style.height = vh + 'px';
+    container.style.marginLeft = ((vw - w) / 2) + 'px';
+  } else {
+    // 手机竖屏：填满
+    container.style.width = vw + 'px';
+    container.style.height = (vw / RATIO) + 'px';
+  }
+})();
+</script>
 
 <script>
     System.import('./index.js').catch(function(err) { console.error(err); })
