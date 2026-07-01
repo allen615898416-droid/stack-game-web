@@ -11,12 +11,11 @@ System.register(["./application.js"], function (_export, _context) {
       Application = _applicationJs.Application;
     }],
     execute: function () {
-      // canvas 尺寸已由 index.html 的 PCAdapter 锁定
-      // 这里只读取，不覆盖
       canvas = document.getElementById('GameCanvas');
       $p = canvas.parentElement;
       bcr = $p.getBoundingClientRect();
-      console.log('[init] container size: ' + Math.round(bcr.width) + 'x' + Math.round(bcr.height));
+      canvas.width = Math.round(bcr.width);
+      canvas.height = Math.round(bcr.height);
 
       application = new Application();
       topLevelImport('cc').then(function (engine) {
