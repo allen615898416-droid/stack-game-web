@@ -5,7 +5,6 @@ System.register(["./application.js"], function (_export, _context) {
   function topLevelImport(url) {
     return System["import"](url);
   }
-
   return {
     setters: [function (_applicationJs) {
       Application = _applicationJs.Application;
@@ -14,9 +13,8 @@ System.register(["./application.js"], function (_export, _context) {
       canvas = document.getElementById('GameCanvas');
       $p = canvas.parentElement;
       bcr = $p.getBoundingClientRect();
-      canvas.width = Math.round(bcr.width);
-      canvas.height = Math.round(bcr.height);
-
+      canvas.width = bcr.width;
+      canvas.height = bcr.height;
       application = new Application();
       topLevelImport('cc').then(function (engine) {
         return application.init(engine);
